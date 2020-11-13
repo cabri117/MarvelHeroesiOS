@@ -9,10 +9,11 @@
 import Foundation
 import UIKit
 protocol HeroesFlowCoordinatorDependencies: Coordinator {
+    func goToHeroeDetail(with model: HeroesModel)
 }
 
 final class HeroesFlowCoordinator: Coordinator, HeroesFlowCoordinatorDependencies {
-    
+
     private unowned let navigationController: UINavigationController
     private lazy var viewModel: HeroesViewModel = {
         return DefaultHeroesViewModel()
@@ -28,10 +29,17 @@ final class HeroesFlowCoordinator: Coordinator, HeroesFlowCoordinatorDependencie
         navigationController.pushViewController(viewController, animated: true)
     }
     
+    func goToHeroeDetail(with model: HeroesModel) {
+        let viewController = makeHeroesDetailController(with: model)
+        navigationController.pushViewController(viewController, animated: true)
+    }
 }
 // MARK: Private Methods
 private extension HeroesFlowCoordinator {
-    func makeHeroesListController() -> UITableViewController {
+    func makeHeroesListController() -> UIViewController {
        return  HeroesListController.create(with: viewModel, coordinator: self)
+    }
+    func makeHeroesDetailController(with model: HeroesModel) -> UIViewController {
+       return HeroeDetailViewController.create(with: model, coordinator: self)
     }
 }

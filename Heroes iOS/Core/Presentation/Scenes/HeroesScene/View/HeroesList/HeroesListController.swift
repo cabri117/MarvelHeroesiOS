@@ -7,8 +7,16 @@
 
 import UIKit
 
-class HeroesListController: UITableViewController {
+class HeroesListController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet private weak var heroesTableView: UITableView!
+    @IBOutlet weak var heroesListLoadingContainerHeight: NSLayoutConstraint!
+    @IBOutlet weak var heroesNextPageIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var emptyStateView: UIView!
+    
     private var viewModel: HeroesViewModel!
+    var items: [HeroesModel] = [] {
+        didSet { reload() }
+    }
     weak var coordinator: HeroesFlowCoordinatorDependencies?
     
     final class func create(with viewModel: HeroesViewModel,
@@ -28,82 +36,88 @@ class HeroesListController: UITableViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ready")
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        heroesTableView.delegate = self
+        heroesTableView.dataSource = self
+        heroesTableView.estimatedRowHeight = HeroesListItemCellTableViewCell.height
+        heroesTableView.rowHeight = UITableView.automaticDimension
+        heroesTableView.register(UINib(nibName: HeroesListItemCellTableViewCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: HeroesListItemCellTableViewCell.reuseIdentifier)
+        viewModel.load()
+        bind(to: viewModel)
     }
-
+    
+    private func bind(to viewModel: HeroesViewModel) {
+        viewModel.heroesItems.observe(on: self) { [weak self] in self?.items = $0 }
+        viewModel.error.observe(on: self) { [weak self]  in self?.showError($0) }
+        viewModel.loading.observe(on: self) { [weak self] loadingState in
+            self?.updateViewsVisibility()
+        }
+    }
+    
+    func reload() {
+        heroesTableView.reloadData()
+    }
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HeroesListItemCellTableViewCell.reuseIdentifier, for: indexPath) as? HeroesListItemCellTableViewCell else {
+            fatalError("Cannot dequeue reusable cell \(HeroesListItemCellTableViewCell.self) with reuseIdentifier: \(HeroesListItemCellTableViewCell.reuseIdentifier)")
+        }
+        
+        cell.fill(with: items[indexPath.row])
+        cell.heroeSelectedAction = { [weak self ]heroeSelected in
+            guard let self = self else {
+                return
+            }
+            self.coordinator?.goToHeroeDetail(with: heroeSelected)
+        }
+        
+        if indexPath.row == items.count - 1 {
+            viewModel.didLoadNextPage()
+        }
+        
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return HeroesListItemCellTableViewCell.height
+    }
+}
+
+private extension HeroesListController {
+    func updateViewsVisibility() {
+        
+        heroesTableView.isHidden = false
+        LoadingView.hide()
+        heroesListLoadingContainerHeight.constant = 0
+        heroesNextPageIndicator.isHidden = true
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            switch self.viewModel.loading.value {
+            case .fullScreen: LoadingView.show()
+            case .nextPage:
+                self.heroesListLoadingContainerHeight.constant = 40
+                self.heroesNextPageIndicator.isHidden = false
+            case .none: break
+            }
+        }
+        
+    }
+    
+    private func showError(_ error: String?) {
+        guard error != nil else {
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.emptyStateView.isHidden = false
+        }
+    }
 }
