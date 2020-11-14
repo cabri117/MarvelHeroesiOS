@@ -4,18 +4,19 @@
 //
 //  Created by TR64UV on 13/11/2020.
 //
-
 import Foundation
+/// Endpoints constructor struct
 struct Endpoint {
     let path: String
     let queries: [String: String]
     let method: HTTPMethod
-    
+    /// Method to create the encpoint
+    /// - Returns: We return the final URL Request
     func create() -> URLRequest? {
-        guard var components = URLComponents(string: "https://gateway.marvel.com/v1/public/\(path)") else {
+        guard var components = URLComponents(string: "\(Constants.url)\(path)") else {
             return nil
         }
-        components.queryItems = queries.map { (key, value) in
+        components.queryItems = queries.map { key, value in
             URLQueryItem(name: key, value: value)
         }
         

@@ -34,19 +34,14 @@ final class DefaultHeroesViewModel: HeroesViewModel {
     
     // MARK: Dependencies
     private lazy var heroesSkillListUseCase = { return FetchHeroesSkillsListUseCase()}()
-    
-    
-
 }
 
 // MARK: - INPUT. View event methods
 extension DefaultHeroesViewModel {
-    
     func didLoadNextPage() {
         self.loading.value = .nextPage
         fetchData()
     }
-    
     func load() {
         self.loading.value = .fullScreen
         fetchData()
@@ -56,13 +51,13 @@ extension DefaultHeroesViewModel {
 
 private extension DefaultHeroesViewModel {
     private func fetchData() {
-        heroesSkillListUseCase.execute { result in
-            self.loading.value = .none
+        heroesSkillListUseCase.execute { [weak self] result in
+            self?.loading.value = .none
             switch result {
             case .success(let heroesList):
-                self.heroesItems.value += heroesList
+                self?.heroesItems.value += heroesList
             case .failure:
-                self.error.value = "unknow error"
+                self?.error.value = "unknow error"
             }
         }
     }

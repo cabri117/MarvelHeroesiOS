@@ -38,6 +38,8 @@
 		39C117A22558772600EFBD33 /* HeroesFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C117A02558772600EFBD33 /* HeroesFlowCoordinator.swift */; };
 		39C117E0255880A500EFBD33 /* HeroesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C117DE255880A500EFBD33 /* HeroesListController.swift */; };
 		39C117E1255880A500EFBD33 /* HeroesListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39C117DF255880A500EFBD33 /* HeroesListController.xib */; };
+		39F0AE3A255F67AE00DD7927 /* HeroeUrlEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F0AE39255F67AE00DD7927 /* HeroeUrlEntity.swift */; };
+		39F0AE40255F72AF00DD7927 /* HeroesListController+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F0AE3F255F72AF00DD7927 /* HeroesListController+UITableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +97,8 @@
 		39C117A02558772600EFBD33 /* HeroesFlowCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroesFlowCoordinator.swift; sourceTree = "<group>"; };
 		39C117DE255880A500EFBD33 /* HeroesListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroesListController.swift; sourceTree = "<group>"; };
 		39C117DF255880A500EFBD33 /* HeroesListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeroesListController.xib; sourceTree = "<group>"; };
+		39F0AE39255F67AE00DD7927 /* HeroeUrlEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroeUrlEntity.swift; sourceTree = "<group>"; };
+		39F0AE3F255F72AF00DD7927 /* HeroesListController+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HeroesListController+UITableView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +159,7 @@
 			children = (
 				391E45472559676F0065CEBC /* HeroesSkillEntity.swift */,
 				391E454C2559678C0065CEBC /* ThumbnailEntity.swift */,
+				39F0AE39255F67AE00DD7927 /* HeroeUrlEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -375,6 +380,7 @@
 		39C117AC2558776D00EFBD33 /* HeroesList */ = {
 			isa = PBXGroup;
 			children = (
+				39F0AE3E255F729200DD7927 /* TableView */,
 				39431497255BD1CD00583780 /* Cell */,
 				39C117DE255880A500EFBD33 /* HeroesListController.swift */,
 				39C117DF255880A500EFBD33 /* HeroesListController.xib */,
@@ -388,6 +394,14 @@
 				39C1179C2558772600EFBD33 /* HeroesScene */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		39F0AE3E255F729200DD7927 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				39F0AE3F255F72AF00DD7927 /* HeroesListController+UITableView.swift */,
+			);
+			path = TableView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -529,6 +543,7 @@
 				39C117912558763800EFBD33 /* AppCoordinator.swift in Sources */,
 				39A65D7A255D77A500414732 /* LoadingView.swift in Sources */,
 				394314A0255BEAE200583780 /* UIImageView+DownloadImage.swift in Sources */,
+				39F0AE3A255F67AE00DD7927 /* HeroeUrlEntity.swift in Sources */,
 				39A65DA2255D8FA200414732 /* HeroeDetailViewController.swift in Sources */,
 				39C1177E2558759400EFBD33 /* Observable.swift in Sources */,
 				391E4564255969E70065CEBC /* DefaultHeroesSkillRepository.swift in Sources */,
@@ -542,6 +557,7 @@
 				391E457725596C4D0065CEBC /* APIEndpoints.swift in Sources */,
 				3943149A255BD1EC00583780 /* HeroesListItemCellTableViewCell.swift in Sources */,
 				391E456F25596BC00065CEBC /* DataTransferService.swift in Sources */,
+				39F0AE40255F72AF00DD7927 /* HeroesListController+UITableView.swift in Sources */,
 				391E454D2559678C0065CEBC /* ThumbnailEntity.swift in Sources */,
 				39C117922558763800EFBD33 /* Coordinator.swift in Sources */,
 				3945DF65255E94DC001492B0 /* String+MD5.swift in Sources */,

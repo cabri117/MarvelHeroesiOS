@@ -8,12 +8,13 @@
 
 import Foundation
 import UIKit
+import SafariServices
 protocol HeroesFlowCoordinatorDependencies: Coordinator {
     func goToHeroeDetail(with model: HeroesModel)
+    func goToMarvelLink(with url: URL)
 }
 
 final class HeroesFlowCoordinator: Coordinator, HeroesFlowCoordinatorDependencies {
-
     private unowned let navigationController: UINavigationController
     private lazy var viewModel: HeroesViewModel = {
         return DefaultHeroesViewModel()
@@ -33,6 +34,12 @@ final class HeroesFlowCoordinator: Coordinator, HeroesFlowCoordinatorDependencie
         let viewController = makeHeroesDetailController(with: model)
         navigationController.pushViewController(viewController, animated: true)
     }
+    
+    func goToMarvelLink(with url: URL) {
+        let viewController = makeSafariController(with: url)
+        navigationController.present(viewController, animated: true, completion: nil)
+    }
+    
 }
 // MARK: Private Methods
 private extension HeroesFlowCoordinator {
@@ -41,5 +48,9 @@ private extension HeroesFlowCoordinator {
     }
     func makeHeroesDetailController(with model: HeroesModel) -> UIViewController {
        return HeroeDetailViewController.create(with: model, coordinator: self)
+    }
+    func makeSafariController(with url: URL) -> UIViewController {
+        let config = SFSafariViewController.Configuration()
+        return SFSafariViewController(url: url, configuration: config)
     }
 }

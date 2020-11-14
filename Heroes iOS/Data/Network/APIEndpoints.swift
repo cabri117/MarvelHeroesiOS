@@ -6,10 +6,12 @@
 //
 
 import Foundation
+/// The API endpoint struct
 struct APIEndpoints {
-    
+    /// We create the Character endpoint
+    /// - Parameter offset: This params support us to load more data
+    /// - Returns: It return the final endpoint already constructed
     static func getCharacters(offset: Int) -> URLRequest? {
-        
         return Endpoint(path: Constants.Endpoints.characters,
                         queries: [Constants.NetworkConfiguration.timestamp: Constants.NetworkConfiguration.timestampData,
                                   Constants.NetworkConfiguration.apiKey: Constants.NetworkConfiguration.publicKey,

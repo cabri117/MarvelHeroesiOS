@@ -7,5 +7,6 @@
 
 import Foundation
 protocol HeroesSkillsRepository {
-    func fetchHeroesSkillsList(offset: Int, completion: @escaping (Result<HeroesSkillsList, DataTransferError>) -> Void)
+    func fetchHeroesSkillsList(offset: Int,
+                               completion: @escaping (Result<HeroesSkillsList, DataTransferError>) -> Void)
 }

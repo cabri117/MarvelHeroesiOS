@@ -9,6 +9,7 @@
 import Foundation
 
 struct Constants {
+    static let url = "https://gateway.marvel.com/v1/public/"
     struct DataConfiguration {
         static let data = "data"
         static let results = "results"

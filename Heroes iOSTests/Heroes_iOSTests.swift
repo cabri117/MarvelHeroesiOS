@@ -13,7 +13,10 @@ class Heroes_iOSTests: XCTestCase {
     func testDataTransferService() {
         let expectition = self.expectation(description: "DataTransferService")
         let dataTransfer = DataTransferService()
-        let endpoint = APIEndpoints.getCharacters(offset: 0)
+        guard let endpoint = APIEndpoints.getCharacters(offset: 0) else {
+            XCTFail("Error getting endpoint")
+            return
+        }
         dataTransfer.request(with: endpoint) { result in
             switch result {
             case .success(let data):
