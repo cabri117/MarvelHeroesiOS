@@ -14,17 +14,22 @@ class HeroeDetailViewController: UIViewController {
     @IBOutlet private weak var heroeDescriptionLbl: UILabel!
     @IBOutlet private weak var descriptionTitleLbl: UILabel!
     @IBOutlet private weak var moreDetailStackView: UIStackView!
+    @IBOutlet private weak var howManyStoriesLbl: UILabel!
+    @IBOutlet weak var howManySeriesLbl: UILabel!
+    @IBOutlet weak var howManyComicsLbl: UILabel!
     // MARK: Private Variables
     private var heroesModel: HeroesModel!
+    private var viewModel: HeroesViewModel!
     private weak var coordinator: HeroesFlowCoordinatorDependencies?
-    private let imageCache = NSCache<NSString, UIImage>()
     // MARK: Create Method
     final class func create(with model: HeroesModel,
+                            from viewModel: HeroesViewModel,
                             coordinator: HeroesFlowCoordinatorDependencies) -> HeroeDetailViewController {
         // We create the controller
         let controller = HeroeDetailViewController()
         //inject model to controller
         controller.heroesModel = model
+        controller.viewModel = viewModel
         controller.coordinator = coordinator
         return controller
     }
@@ -41,12 +46,26 @@ class HeroeDetailViewController: UIViewController {
         showHeroeDescription()
         showHeroeImage()
         createHeroesStackView()
+        guard let howManyStories = heroesModel.howManyStories else {
+            return
+        }
+        howManyStoriesLbl.text = "\(howManyStories) Stories"
+        guard let howManySeries = heroesModel.howManySeries else {
+            return
+        }
+        howManySeriesLbl.text = "\(howManySeries) Series"
+        guard let howManyComics = heroesModel.howManyComics else {
+            return
+        }
+        howManyComicsLbl.text = "\(howManyComics) Comics"
+        view.accessibilityIdentifier = "HeroeDetailViewController"
     }
 }
 // MARK: Private Methods
 private extension HeroeDetailViewController {
     func showHeroeDescription() {
         guard !heroesModel.description.isEmpty else {
+            heroeDescriptionLbl.text = "We don't have a description for this heroe :(. But we have more details in the buttons above :D"
             return
         }
         descriptionTitleLbl.isHidden = false
@@ -56,16 +75,31 @@ private extension HeroeDetailViewController {
     func showHeroeImage() {
         heroeComicUIImageView.alpha = 0.0
         activityIndicatorView.isHidden = false
-        guard let posterImagePath = heroesModel.imageUrl, let imageUrl = URL(string: posterImagePath) else { return }
-        self.heroeComicUIImageView.downloadImage(from: imageUrl,
-                                                 cacheImage: imageCache) { [weak self] in
+        guard let posterImagePath = heroesModel.imageUrl,
+              let imageUrl = URL(string: posterImagePath) else { return }
+        _ = viewModel.posterImagesRepository?.loadImage(imageUrl) { [weak self] result in
+            switch result {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self?.heroeComicUIImageView.image = UIImage(data: data)
+                    self?.animateThumbnail()
+                }
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.heroeComicUIImageView.image = UIImage(named: "empty_state")
+                    self?.animateThumbnail()
+                }
+            }
             
-            UIView.animate(withDuration: 0.3, delay: 0.2, options: .curveEaseInOut,
-                           animations: {
-                            self?.heroeComicUIImageView.alpha = 1.0
-                            self?.activityIndicatorView.isHidden = true
-                           })
         }
+    }
+    
+    func animateThumbnail() {
+        UIView.animate(withDuration: 0.3, delay: 0.2, options: .curveEaseInOut,
+                       animations: { [weak self] in
+                        self?.heroeComicUIImageView.alpha = 1.0
+                        self?.activityIndicatorView.isHidden = true
+                       })
     }
     
     func createHeroesStackView() {
@@ -81,6 +115,7 @@ private extension HeroeDetailViewController {
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button.tag = idTag
+        button.accessibilityIdentifier = title
         button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         
         moreDetailStackView.addArrangedSubview(button)

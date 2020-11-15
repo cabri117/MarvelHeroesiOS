@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Constants {
     static let url = "https://gateway.marvel.com/v1/public/"

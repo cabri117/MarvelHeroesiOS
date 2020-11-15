@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		391CC4F6256177BA0024536F /* DefaultFetchHeroesImagesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391CC4F5256177BA0024536F /* DefaultFetchHeroesImagesRepository.swift */; };
+		391CC50425617DE30024536F /* FetchHeroesImagesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391CC50325617DE30024536F /* FetchHeroesImagesRepository.swift */; };
+		391CC50C25618C130024536F /* ComicsEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391CC50B25618C130024536F /* ComicsEntity.swift */; };
 		391E45482559676F0065CEBC /* HeroesSkillEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391E45472559676F0065CEBC /* HeroesSkillEntity.swift */; };
 		391E454D2559678C0065CEBC /* ThumbnailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391E454C2559678C0065CEBC /* ThumbnailEntity.swift */; };
 		391E4555255968C80065CEBC /* JsonCodableManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391E4554255968C80065CEBC /* JsonCodableManagement.swift */; };
@@ -16,7 +19,6 @@
 		391E457725596C4D0065CEBC /* APIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391E457625596C4D0065CEBC /* APIEndpoints.swift */; };
 		3943149A255BD1EC00583780 /* HeroesListItemCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39431498255BD1EC00583780 /* HeroesListItemCellTableViewCell.swift */; };
 		3943149B255BD1EC00583780 /* HeroesListItemCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39431499255BD1EC00583780 /* HeroesListItemCellTableViewCell.xib */; };
-		394314A0255BEAE200583780 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3943149F255BEAE200583780 /* UIImageView+DownloadImage.swift */; };
 		3945DF65255E94DC001492B0 /* String+MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3945DF64255E94DC001492B0 /* String+MD5.swift */; };
 		3945DF6A255E9952001492B0 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3945DF69255E9952001492B0 /* Endpoint.swift */; };
 		3978658C2559A56400050702 /* FetchHeroesSkillsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3978658B2559A56400050702 /* FetchHeroesSkillsList.swift */; };
@@ -60,6 +62,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		391CC4F5256177BA0024536F /* DefaultFetchHeroesImagesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFetchHeroesImagesRepository.swift; sourceTree = "<group>"; };
+		391CC50325617DE30024536F /* FetchHeroesImagesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchHeroesImagesRepository.swift; sourceTree = "<group>"; };
+		391CC50B25618C130024536F /* ComicsEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicsEntity.swift; sourceTree = "<group>"; };
 		391E45472559676F0065CEBC /* HeroesSkillEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroesSkillEntity.swift; sourceTree = "<group>"; };
 		391E454C2559678C0065CEBC /* ThumbnailEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailEntity.swift; sourceTree = "<group>"; };
 		391E4554255968C80065CEBC /* JsonCodableManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonCodableManagement.swift; sourceTree = "<group>"; };
@@ -69,7 +74,6 @@
 		391E457625596C4D0065CEBC /* APIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoints.swift; sourceTree = "<group>"; };
 		39431498255BD1EC00583780 /* HeroesListItemCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroesListItemCellTableViewCell.swift; sourceTree = "<group>"; };
 		39431499255BD1EC00583780 /* HeroesListItemCellTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeroesListItemCellTableViewCell.xib; sourceTree = "<group>"; };
-		3943149F255BEAE200583780 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
 		3945DF64255E94DC001492B0 /* String+MD5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+MD5.swift"; sourceTree = "<group>"; };
 		3945DF69255E9952001492B0 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		3978658B2559A56400050702 /* FetchHeroesSkillsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchHeroesSkillsList.swift; sourceTree = "<group>"; };
@@ -139,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				391E4563255969E70065CEBC /* DefaultHeroesSkillRepository.swift */,
+				391CC4F5256177BA0024536F /* DefaultFetchHeroesImagesRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -160,6 +165,7 @@
 				391E45472559676F0065CEBC /* HeroesSkillEntity.swift */,
 				391E454C2559678C0065CEBC /* ThumbnailEntity.swift */,
 				39F0AE39255F67AE00DD7927 /* HeroeUrlEntity.swift */,
+				391CC50B25618C130024536F /* ComicsEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -184,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				391E455B255969810065CEBC /* HeroesSkillRepository.swift */,
+				391CC50325617DE30024536F /* FetchHeroesImagesRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -243,7 +250,6 @@
 		39B6125D255AB2D00013D9D2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				3943149F255BEAE200583780 /* UIImageView+DownloadImage.swift */,
 				3945DF64255E94DC001492B0 /* String+MD5.swift */,
 			);
 			path = Extensions;
@@ -542,15 +548,17 @@
 				39C117E0255880A500EFBD33 /* HeroesListController.swift in Sources */,
 				39C117912558763800EFBD33 /* AppCoordinator.swift in Sources */,
 				39A65D7A255D77A500414732 /* LoadingView.swift in Sources */,
-				394314A0255BEAE200583780 /* UIImageView+DownloadImage.swift in Sources */,
 				39F0AE3A255F67AE00DD7927 /* HeroeUrlEntity.swift in Sources */,
+				391CC4F6256177BA0024536F /* DefaultFetchHeroesImagesRepository.swift in Sources */,
 				39A65DA2255D8FA200414732 /* HeroeDetailViewController.swift in Sources */,
 				39C1177E2558759400EFBD33 /* Observable.swift in Sources */,
 				391E4564255969E70065CEBC /* DefaultHeroesSkillRepository.swift in Sources */,
 				3945DF6A255E9952001492B0 /* Endpoint.swift in Sources */,
 				3978658C2559A56400050702 /* FetchHeroesSkillsList.swift in Sources */,
+				391CC50425617DE30024536F /* FetchHeroesImagesRepository.swift in Sources */,
 				39C1173E255874AC00EFBD33 /* AppDelegate.swift in Sources */,
 				39C117A22558772600EFBD33 /* HeroesFlowCoordinator.swift in Sources */,
+				391CC50C25618C130024536F /* ComicsEntity.swift in Sources */,
 				391E45482559676F0065CEBC /* HeroesSkillEntity.swift in Sources */,
 				39C11740255874AC00EFBD33 /* SceneDelegate.swift in Sources */,
 				39C1177D2558759400EFBD33 /* Constants.swift in Sources */,
@@ -659,7 +667,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -714,7 +722,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

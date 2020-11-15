@@ -10,6 +10,9 @@ struct HeroesModel {
     let id: Int
     let name, description: String
     let imageUrl: String?
+    let howManyComics: Int?
+    let howManyStories: Int?
+    let howManySeries: Int?
     let moreDetailElements: [MoreDetailsLinkModel]
 }
 

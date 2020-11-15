@@ -32,4 +32,6 @@ final class FetchHeroesSkillsListUseCase {
             }
         }
     }
+    
+    func resetCurrentOffset() { self.currentOffset = 0}
 }

@@ -16,57 +16,73 @@ class HeroesListItemCellTableViewCell: UITableViewCell {
     static let reuseIdentifier = String(describing: HeroesListItemCellTableViewCell.self)
     static let height = CGFloat(84)
     // MARK: Private Variables
-    private let imageCache = NSCache<NSString, UIImage>()
     private var model: HeroesModel?
-    // MARK: Public Variables
-    public var heroeSelectedAction: HeroesListItemDidSelectAction?
+    private var posterImagesRepository: FetchHeroesImagesRepository?
+    private var currentImageToken: UUID?
+    
     /// We fill the cell
     /// - Parameter model: We use the heroes model to fill the cell
-    func fill(with model: HeroesModel) {
+    func fill(with model: HeroesModel,
+              posterImagesRepository: FetchHeroesImagesRepository?) {
+        self.posterImagesRepository = posterImagesRepository
         self.model = model
         titleLabel.text = model.name
-        updatePosterImage(with: model)
+        updatePosterImage()
+        accessibilityIdentifier = model.name
     }
     /// If we reuse the cell we perfom a clean up of the vairables
     override func prepareForReuse() {
-        titleLabel?.text = nil
-        self.comicUIimage.image = nil
+        titleLabel.text = nil
         model = nil
+        comicUIimage.image = nil
+        comicUIimage.alpha = 0.0
+        if let currentImageToken = currentImageToken  {
+            posterImagesRepository?.cancelLoad(currentImageToken)
+        }
         super.prepareForReuse()
     }
-    @IBAction func onHeroeSelected(_ sender: Any) {
-        guard let model = model,
-              let action = self.heroeSelectedAction else {
-            return
-        }
-        action(model)
-    }
+    
 }
 
-private extension HeroesListItemCellTableViewCell {
+extension HeroesListItemCellTableViewCell {
     /// We download the image or maybe is already cached
-    /// - Parameter model: We use the heores model to retrieve the heroe image
-    private func updatePosterImage(with model: HeroesModel) {
-        guard let posterImagePath = model.imageUrl,
-              let imageUrl = URL(string: posterImagePath) else { return }
+    /// - Parameter model: We use the heroes model to retrieve the heroe image
+    private func updatePosterImage() {
         loadingIndicator.isHidden = false
         loadingIndicator.startAnimating()
-        self.comicUIimage.alpha = 0.0
-        self.comicUIimage.downloadImage(from: imageUrl,
-                                        cacheImage: imageCache) { [weak self] in
+        guard let posterImagePath = model?.imageUrl,
+              let imageUrl = URL(string: posterImagePath) else { return }
+        currentImageToken = posterImagesRepository?.loadImage(imageUrl) { [weak self] result in
             guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.loadingIndicator.isHidden = true
-                UIView.animate(withDuration: 0.3,
-                               delay: 0.2,
-                               options: .curveEaseInOut,
-                               animations: {
-                                self.comicUIimage.alpha = 1.0
-                               })
-                
+            switch result {
+            case .success(let data):
+                DispatchQueue.main.async {  [weak self] in
+                    guard let self = self else { return }
+                    self.comicUIimage.image = UIImage(data: data)
+                    self.animateThumbnail()
+                    
+                }
+            case .failure:
+                DispatchQueue.main.async {  [weak self] in
+                    guard let self = self else { return }
+                    self.comicUIimage.image = UIImage(named: "empty_state")
+                    self.animateThumbnail()
+                }
+                if let currentImageToken = self.currentImageToken  {
+                    self.posterImagesRepository?.cancelLoad(currentImageToken)
+                }
             }
-            
         }
+    }
+    
+    func animateThumbnail() {
+        UIView.animate(withDuration: 0.3,
+                       delay: 0.2,
+                       options: .curveEaseInOut,
+                       animations: {
+                        self.loadingIndicator.isHidden = true
+                        self.comicUIimage.alpha = 1.0
+                       })
         
     }
 }

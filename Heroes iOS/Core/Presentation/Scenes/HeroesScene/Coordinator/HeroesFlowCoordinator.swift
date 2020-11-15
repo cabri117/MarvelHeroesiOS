@@ -47,7 +47,9 @@ private extension HeroesFlowCoordinator {
        return  HeroesListController.create(with: viewModel, coordinator: self)
     }
     func makeHeroesDetailController(with model: HeroesModel) -> UIViewController {
-       return HeroeDetailViewController.create(with: model, coordinator: self)
+       return HeroeDetailViewController.create(with: model,
+                                               from: viewModel,
+                                               coordinator: self)
     }
     func makeSafariController(with url: URL) -> UIViewController {
         let config = SFSafariViewController.Configuration()

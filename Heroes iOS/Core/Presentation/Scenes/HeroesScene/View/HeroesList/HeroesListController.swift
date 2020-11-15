@@ -13,11 +13,10 @@ class HeroesListController: UIViewController {
     @IBOutlet private weak var heroesListLoadingContainerHeight: NSLayoutConstraint!
     @IBOutlet private weak var heroesNextPageIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var emptyStateView: UIView!
+    let refreshControl = UIRefreshControl()
     // MARK: Public Variables
     var viewModel: HeroesViewModel!
-    var items: [HeroesModel] = [] {
-        didSet { reload() }
-    }
+    var items: [HeroesModel] = []
     weak var coordinator: HeroesFlowCoordinatorDependencies?
     // MARK: Create Method
     final class func create(with viewModel: HeroesViewModel,
@@ -39,15 +38,21 @@ class HeroesListController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Marvel Heroes!"
+        heroesTableView.addSubview(refreshControl)
+        refreshControl.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
         createTableView()
         viewModel.load()
         bind(to: viewModel)
+        view.accessibilityIdentifier = "HeroesListController"
     }
 }
 
 private extension HeroesListController {
     func bind(to viewModel: HeroesViewModel) {
-        viewModel.heroesItems.observe(on: self) { [weak self] in self?.items = $0 }
+        viewModel.heroesItems.observe(on: self) { [weak self] in
+            self?.items = $0
+            self?.reload()
+        }
         viewModel.error.observe(on: self) { [weak self]  in self?.showError($0) }
         viewModel.loading.observe(on: self) { [weak self] _ in self?.updateViewsVisibility()}
     }
@@ -56,6 +61,7 @@ private extension HeroesListController {
         LoadingView.hide()
         heroesListLoadingContainerHeight.constant = 0
         heroesNextPageIndicator.isHidden = true
+        emptyStateView.isHidden = true
         DispatchQueue.main.async { [weak self] in
             guard let self = self else {
                 return
@@ -65,17 +71,41 @@ private extension HeroesListController {
             case .nextPage:
                 self.heroesListLoadingContainerHeight.constant = 40
                 self.heroesNextPageIndicator.isHidden = false
-            case .none: break
+            case .none:
+                self.refreshControl.endRefreshing()
+            case .refresh: break
             }
         }
         
     }
     func showError(_ error: String?) {
+        self.emptyStateView.alpha = 0.0
         guard error != nil else {
             return
         }
         DispatchQueue.main.async { [weak self] in
-            self?.emptyStateView.isHidden = false
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.2,
+                           options: .curveEaseInOut,
+                           animations: {
+                            guard let self = self else {
+                                return
+                            }
+                            self.heroesTableView.isHidden = false
+                            self.emptyStateView.isHidden = false
+                            self.emptyStateView.alpha = 1.0
+                            LoadingView.hide()
+                            self.heroesListLoadingContainerHeight.constant = 0
+                            self.heroesNextPageIndicator.isHidden = true
+                           })
+            
         }
+    }
+    @objc private func refreshWeatherData(_ sender: Any) {
+        viewModel.refreshData()
+    }
+    
+    @IBAction private func restartButton(_ sender: Any) {
+        viewModel.refreshData()
     }
 }
