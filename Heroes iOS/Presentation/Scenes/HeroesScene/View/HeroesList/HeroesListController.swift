@@ -39,7 +39,7 @@ class HeroesListController: UIViewController {
         super.viewDidLoad()
         title = "Marvel Heroes!"
         heroesTableView.addSubview(refreshControl)
-        refreshControl.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshHeroeData(_:)), for: .valueChanged)
         createTableView()
         viewModel.load()
         bind(to: viewModel)
@@ -99,10 +99,10 @@ private extension HeroesListController {
                            })
         }
     }
-    @objc private func refreshWeatherData(_ sender: Any) {
+    @objc func refreshHeroeData(_ sender: Any) {
         viewModel.refreshData()
     }
-    @IBAction private func restartButton(_ sender: Any) {
+    @IBAction func restartButton(_ sender: Any) {
         viewModel.refreshData()
     }
 }
