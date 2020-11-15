@@ -48,7 +48,7 @@
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_state" translatesAutoresizingMaskIntoConstraints="NO" id="lvO-Kk-JDX">
                             <rect key="frame" x="50" y="20" width="220" height="285"/>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We have lost you! :(" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nLu-Xh-BRC">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We have lost you! :(" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nLu-Xh-BRC">
                             <rect key="frame" x="0.0" y="325" width="320" height="33.5"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" id="DV0-7J-QRZ"/>

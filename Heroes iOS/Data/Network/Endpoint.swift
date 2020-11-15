@@ -19,7 +19,6 @@ struct Endpoint {
         components.queryItems = queries.map { key, value in
             URLQueryItem(name: key, value: value)
         }
-        
         guard let url = components.url else {
             return nil
         }

@@ -30,16 +30,13 @@ enum HeroesViewModelLoading {
 protocol HeroesViewModel: HeroesViewModelInput, HeroesViewModelOutput { }
 
 final class DefaultHeroesViewModel: HeroesViewModel {
-   
     // MARK: OUTPUT
     let heroesItems: Observable<[HeroesModel]> = Observable([])
     let error: Observable<String?> = Observable(nil)
     var loading: Observable<HeroesViewModelLoading> = Observable(.none)
     lazy var posterImagesRepository: FetchHeroesImagesRepository? = { return DefaultFetchHeroesImagesRepository()}()
-    
     // MARK: Dependencies
     private lazy var heroesSkillListUseCase = { return FetchHeroesSkillsListUseCase()}()
-    
 }
 
 // MARK: - INPUT. View event methods
@@ -55,7 +52,6 @@ extension DefaultHeroesViewModel {
         self.loading.value = .fullScreen
         fetchData()
     }
-    
     func refreshData() {
         self.loading.value = .refresh
         heroesSkillListUseCase.resetCurrentOffset()
@@ -68,7 +64,7 @@ private extension DefaultHeroesViewModel {
         heroesSkillListUseCase.execute { [weak self] result in
             switch result {
             case .success(let heroesList):
-                if(self?.loading.value == .refresh) { self?.heroesItems.value = [] }
+                if self?.loading.value == .refresh { self?.heroesItems.value = [] }
                 self?.loading.value = .none
                 self?.heroesItems.value += heroesList
             case .failure:
@@ -76,5 +72,4 @@ private extension DefaultHeroesViewModel {
             }
         }
     }
-    
 }

@@ -8,7 +8,7 @@
 import Foundation
 typealias HeroesSkillsList = [HeroesSkillsEntity]
 struct HeroesSkillsEntity: Decodable {
-    let id: Int
+    let identifier: Int
     let name, heroesSkillsEntityDescription: String
     let modified: Date
     let thumbnail: Thumbnail
@@ -16,9 +16,9 @@ struct HeroesSkillsEntity: Decodable {
     let comicsAvailable: ResourcesEntity?
     let seriesAvailable: ResourcesEntity?
     let storiesAvailable: ResourcesEntity?
-    
     enum CodingKeys: String, CodingKey {
-        case id, name
+        case identifier = "id"
+        case name
         case heroesSkillsEntityDescription = "description"
         case modified, thumbnail
         case heroeUrl = "urls"
@@ -33,12 +33,11 @@ extension HeroesSkillsEntity {
     /// - Returns: The heroes model :), our presentation model
     func toHeroesModel() -> HeroesModel {
         let imageUrl = "\(thumbnail.path)/portrait_xlarge.\(thumbnail.thumbnailExtension)"
-        let moreDetailElements =  heroeUrl.enumerated().map({ index,
-                                                              element in
+        let moreDetailElements =  heroeUrl.enumerated().map({ index, element in
                                                                 MoreDetailsLinkModel(tagId: index,
                                                                                      name: element.type,
                                                                                      url: element.url)})
-        return .init(id: self.id,
+        return .init(identifier: self.identifier,
                      name: self.name,
                      description: self.heroesSkillsEntityDescription,
                      imageUrl: imageUrl,

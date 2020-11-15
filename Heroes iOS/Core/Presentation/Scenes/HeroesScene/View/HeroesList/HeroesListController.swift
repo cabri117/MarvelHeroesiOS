@@ -76,7 +76,6 @@ private extension HeroesListController {
             case .refresh: break
             }
         }
-        
     }
     func showError(_ error: String?) {
         self.emptyStateView.alpha = 0.0
@@ -98,13 +97,11 @@ private extension HeroesListController {
                             self.heroesListLoadingContainerHeight.constant = 0
                             self.heroesNextPageIndicator.isHidden = true
                            })
-            
         }
     }
     @objc private func refreshWeatherData(_ sender: Any) {
         viewModel.refreshData()
     }
-    
     @IBAction private func restartButton(_ sender: Any) {
         viewModel.refreshData()
     }

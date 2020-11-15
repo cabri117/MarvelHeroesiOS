@@ -16,11 +16,9 @@ struct Constants {
         static let results = "results"
         static let mimeType = "application/json"
     }
-    
     struct Endpoints {
         static let characters = "characters"
     }
-    
     struct NetworkConfiguration {
         static let timestamp = "ts"
         static let timestampData = "1"
@@ -32,5 +30,8 @@ struct Constants {
         static let hash = "hash"
         static let offset = "offset"
         static let apiKey = "apikey"
+    }
+    struct ImageName {
+        static let emptyState = "empty_state"
     }
 }

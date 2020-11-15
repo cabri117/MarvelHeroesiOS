@@ -16,7 +16,10 @@ extension HeroesListController: UITableViewDelegate,
         heroesTableView.estimatedRowHeight = HeroesListItemCellTableViewCell.height
         heroesTableView.rowHeight = UITableView.automaticDimension
         heroesTableView.allowsSelection = true
-        heroesTableView.register(UINib(nibName: HeroesListItemCellTableViewCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: HeroesListItemCellTableViewCell.reuseIdentifier)
+        heroesTableView.register(UINib(
+                                    nibName: HeroesListItemCellTableViewCell.reuseIdentifier,
+                                    bundle: nil),
+                                 forCellReuseIdentifier: HeroesListItemCellTableViewCell.reuseIdentifier)
         heroesTableView.accessibilityIdentifier = "heroesTableView"
     }
     func reload() {
@@ -26,25 +29,22 @@ extension HeroesListController: UITableViewDelegate,
         return items.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: HeroesListItemCellTableViewCell.reuseIdentifier, for: indexPath) as? HeroesListItemCellTableViewCell else {
-            fatalError("Cannot dequeue reusable cell \(HeroesListItemCellTableViewCell.self) with reuseIdentifier: \(HeroesListItemCellTableViewCell.reuseIdentifier)")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HeroesListItemCellTableViewCell.reuseIdentifier,
+                                                       for: indexPath) as? HeroesListItemCellTableViewCell else {
+            fatalError("Cannot dequeue reusable cell \(HeroesListItemCellTableViewCell.self)")
         }
         cell.fill(with: items[indexPath.row],
                   posterImagesRepository: viewModel.posterImagesRepository)
-        
         return cell
     }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return HeroesListItemCellTableViewCell.height
     }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let heroeSelected = items[indexPath.row]
         self.coordinator?.goToHeroeDetail(with: heroeSelected)
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == items.count - 1 {
             viewModel.loadNextPage()

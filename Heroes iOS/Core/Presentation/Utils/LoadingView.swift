@@ -7,12 +7,13 @@
 
 import UIKit
 public class LoadingView {
-    
     internal static var spinner: UIActivityIndicatorView?
-    
     public static func show() {
         DispatchQueue.main.async {
-            NotificationCenter.default.addObserver(self, selector: #selector(update), name: UIDevice.orientationDidChangeNotification, object: nil)
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(update),
+                                                   name: UIDevice.orientationDidChangeNotification,
+                                                   object: nil)
             if spinner == nil,
                let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first {
                 let frame = UIScreen.main.bounds
@@ -20,13 +21,11 @@ public class LoadingView {
                 spinner.backgroundColor = UIColor.black.withAlphaComponent(0.2)
                 spinner.style = .large
                 window.addSubview(spinner)
-                
                 spinner.startAnimating()
                 self.spinner = spinner
             }
         }
     }
-    
     public static func hide() {
         DispatchQueue.main.async {
             guard let spinner = spinner else { return }
@@ -35,7 +34,6 @@ public class LoadingView {
             self.spinner = nil
         }
     }
-    
     @objc public static func update() {
         DispatchQueue.main.async {
             if spinner != nil {

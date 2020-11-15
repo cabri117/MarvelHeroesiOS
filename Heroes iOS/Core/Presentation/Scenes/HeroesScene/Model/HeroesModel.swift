@@ -7,7 +7,7 @@
 
 import Foundation
 struct HeroesModel {
-    let id: Int
+    let identifier: Int
     let name, description: String
     let imageUrl: String?
     let howManyComics: Int?

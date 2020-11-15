@@ -19,7 +19,6 @@ class HeroesListItemCellTableViewCell: UITableViewCell {
     private var model: HeroesModel?
     private var posterImagesRepository: FetchHeroesImagesRepository?
     private var currentImageToken: UUID?
-    
     /// We fill the cell
     /// - Parameter model: We use the heroes model to fill the cell
     func fill(with model: HeroesModel,
@@ -36,12 +35,9 @@ class HeroesListItemCellTableViewCell: UITableViewCell {
         model = nil
         comicUIimage.image = nil
         comicUIimage.alpha = 0.0
-        if let currentImageToken = currentImageToken  {
-            posterImagesRepository?.cancelLoad(currentImageToken)
-        }
+        self.cancelCurrentImageToken()
         super.prepareForReuse()
     }
-    
 }
 
 extension HeroesListItemCellTableViewCell {
@@ -60,21 +56,17 @@ extension HeroesListItemCellTableViewCell {
                     guard let self = self else { return }
                     self.comicUIimage.image = UIImage(data: data)
                     self.animateThumbnail()
-                    
                 }
             case .failure:
                 DispatchQueue.main.async {  [weak self] in
                     guard let self = self else { return }
-                    self.comicUIimage.image = UIImage(named: "empty_state")
+                    self.comicUIimage.image = UIImage(named: Constants.ImageName.emptyState)
                     self.animateThumbnail()
                 }
-                if let currentImageToken = self.currentImageToken  {
-                    self.posterImagesRepository?.cancelLoad(currentImageToken)
-                }
+                self.cancelCurrentImageToken()
             }
         }
     }
-    
     func animateThumbnail() {
         UIView.animate(withDuration: 0.3,
                        delay: 0.2,
@@ -83,6 +75,10 @@ extension HeroesListItemCellTableViewCell {
                         self.loadingIndicator.isHidden = true
                         self.comicUIimage.alpha = 1.0
                        })
-        
+    }
+    func cancelCurrentImageToken() {
+        if let currentImageToken = self.currentImageToken {
+            self.posterImagesRepository?.cancelLoad(currentImageToken)
+        }
     }
 }

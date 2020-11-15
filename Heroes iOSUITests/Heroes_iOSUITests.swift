@@ -7,9 +7,8 @@
 
 import XCTest
 
-class Heroes_iOSUITests: XCTestCase {
+class HeroesiOSUITests: XCTestCase {
     var app: XCUIApplication = XCUIApplication()
-    
     override func setUp() {
             super.setUp()
 
@@ -24,7 +23,6 @@ class Heroes_iOSUITests: XCTestCase {
             app.launchArguments.append("--uitesting")
         }
 
-
     func testHeroesList() throws {
         app.launch()
         XCTAssertTrue(app.isDisplayingHeroesList)
@@ -33,7 +31,6 @@ class Heroes_iOSUITests: XCTestCase {
         expectation(for: exists, evaluatedWith: firstHeroes, handler: nil)
         waitForExpectations(timeout: 5, handler: nil)
     }
-    
     func testHeroesDetail() throws {
         app.launch()
         XCTAssertTrue(app.isDisplayingHeroesList)

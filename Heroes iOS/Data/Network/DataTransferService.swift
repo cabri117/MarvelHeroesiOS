@@ -49,7 +49,8 @@ class DataTransferService {
                   let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                   let jsonData  = json[Constants.DataConfiguration.data] as? [String: Any],
                   let jsonResults = jsonData[Constants.DataConfiguration.results],
-                  let resultData = try? JSONSerialization.data(withJSONObject: jsonResults, options: .prettyPrinted) else {
+                  let resultData = try? JSONSerialization.data(withJSONObject: jsonResults,
+                    options: .prettyPrinted) else {
                 asyncCompletition(.failure(DataTransferError.parsingError))
                 return
             }

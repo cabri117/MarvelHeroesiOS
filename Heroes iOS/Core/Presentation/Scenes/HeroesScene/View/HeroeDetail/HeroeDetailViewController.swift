@@ -46,18 +46,9 @@ class HeroeDetailViewController: UIViewController {
         showHeroeDescription()
         showHeroeImage()
         createHeroesStackView()
-        guard let howManyStories = heroesModel.howManyStories else {
-            return
-        }
-        howManyStoriesLbl.text = "\(howManyStories) Stories"
-        guard let howManySeries = heroesModel.howManySeries else {
-            return
-        }
-        howManySeriesLbl.text = "\(howManySeries) Series"
-        guard let howManyComics = heroesModel.howManyComics else {
-            return
-        }
-        howManyComicsLbl.text = "\(howManyComics) Comics"
+        createHowManyStories()
+        createHowManySeries()
+        createHowManyComics()
         view.accessibilityIdentifier = "HeroeDetailViewController"
     }
 }
@@ -65,13 +56,15 @@ class HeroeDetailViewController: UIViewController {
 private extension HeroeDetailViewController {
     func showHeroeDescription() {
         guard !heroesModel.description.isEmpty else {
-            heroeDescriptionLbl.text = "We don't have a description for this heroe :(. But we have more details in the buttons above :D"
+            heroeDescriptionLbl.text = """
+                                        We don't have a description for
+                                        this heroe :(. But we have more details in the buttons above :D
+                                        """
             return
         }
         descriptionTitleLbl.isHidden = false
         heroeDescriptionLbl.text = heroesModel.description
     }
-    
     func showHeroeImage() {
         heroeComicUIImageView.alpha = 0.0
         activityIndicatorView.isHidden = false
@@ -86,14 +79,12 @@ private extension HeroeDetailViewController {
                 }
             case .failure:
                 DispatchQueue.main.async {
-                    self?.heroeComicUIImageView.image = UIImage(named: "empty_state")
+                    self?.heroeComicUIImageView.image = UIImage(named: Constants.ImageName.emptyState)
                     self?.animateThumbnail()
                 }
             }
-            
         }
     }
-    
     func animateThumbnail() {
         UIView.animate(withDuration: 0.3, delay: 0.2, options: .curveEaseInOut,
                        animations: { [weak self] in
@@ -101,13 +92,11 @@ private extension HeroeDetailViewController {
                         self?.activityIndicatorView.isHidden = true
                        })
     }
-    
     func createHeroesStackView() {
         moreDetailStackView.distribution = .fillEqually
         moreDetailStackView.spacing = 16
         heroesModel.moreDetailElements.forEach({createButton($0.name, $0.tagId) })
     }
-    
     func createButton(_ title: String, _ idTag: Int) {
         let button = UIButton()
         button.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
@@ -117,15 +106,31 @@ private extension HeroeDetailViewController {
         button.tag = idTag
         button.accessibilityIdentifier = title
         button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-        
         moreDetailStackView.addArrangedSubview(button)
     }
-    
     @objc func buttonAction(sender: UIButton!) {
         guard let detailModel = heroesModel.moreDetailElements.first(where: {$0.tagId == sender.tag}),
               let url = URL(string: detailModel.url) else {
             return
         }
         coordinator?.goToMarvelLink(with: url)
+    }
+    func createHowManySeries() {
+        guard let howManySeries = heroesModel.howManySeries else {
+            return
+        }
+        howManySeriesLbl.text = "\(howManySeries) Series"
+    }
+    func createHowManyStories() {
+        guard let howManyStories = heroesModel.howManyStories else {
+            return
+        }
+        howManyStoriesLbl.text = "\(howManyStories) Stories"
+    }
+    func createHowManyComics() {
+        guard let howManyComics = heroesModel.howManyComics else {
+            return
+        }
+        howManyComicsLbl.text = "\(howManyComics) Comics"
     }
 }

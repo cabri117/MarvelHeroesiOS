@@ -8,7 +8,7 @@
 import XCTest
 @testable import Heroes_iOS
 
-class Heroes_iOSTests: XCTestCase {
+class HeroesiOSTests: XCTestCase {
 
     func testDataTransferService() {
         let expectition = self.expectation(description: "DataTransferService")
@@ -32,11 +32,9 @@ class Heroes_iOSTests: XCTestCase {
         }
         waitForExpectations(timeout: 5, handler: nil)
     }
-    
     func testHeroesSkillRepository() {
         let expectition = self.expectation(description: "HeroesSkillRepository")
-        
-        DefaultHeroesSkillRepository().fetchHeroesSkillsList(offset: 40){ result in
+        DefaultHeroesSkillRepository().fetchHeroesSkillsList(offset: 40) { result in
             switch result {
             case .success(let heroesList):
                 XCTAssertEqual(heroesList.count, 40)
@@ -47,23 +45,6 @@ class Heroes_iOSTests: XCTestCase {
         }
         waitForExpectations(timeout: 5, handler: nil)
     }
-    
-    func testHeroesSkillsListUseCase() {
-        let expectition = self.expectation(description: "fetchHeroesSkillsListUseCase")
-        let completion: ((Result<[HeroesModel], Error>) -> Void) = { result in
-            switch result {
-            case .success(let heroesPresentationList):
-                XCTAssertNotNil(heroesPresentationList)
-                expectition.fulfill()
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-            }
-            
-        }
-        FetchHeroesSkillsListUseCase().execute(completion: completion)
-        waitForExpectations(timeout: 5, handler: nil)
-    }
-    
     func testHeroesViewModelFetchData() {
         let expectition = self.expectation(description: "fetchHeroesSkillsListUseCase")
         let viewModel = DefaultHeroesViewModel()
@@ -75,7 +56,6 @@ class Heroes_iOSTests: XCTestCase {
             XCTAssertEqual(items.count, 40)
             expectition.fulfill()
         }
-        
         viewModel.error.observe(on: self) { error in
             guard let error = error  else {
                 return
@@ -83,7 +63,6 @@ class Heroes_iOSTests: XCTestCase {
             XCTFail(error)
             expectition.fulfill()
         }
-        
         waitForExpectations(timeout: 5, handler: nil)
     }
 }

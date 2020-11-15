@@ -19,27 +19,22 @@ final class HeroesFlowCoordinator: Coordinator, HeroesFlowCoordinatorDependencie
     private lazy var viewModel: HeroesViewModel = {
         return DefaultHeroesViewModel()
     }()
-    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-    
     override func start() {
         add(child: self)
         let viewController = makeHeroesListController()
         navigationController.pushViewController(viewController, animated: true)
     }
-    
     func goToHeroeDetail(with model: HeroesModel) {
         let viewController = makeHeroesDetailController(with: model)
         navigationController.pushViewController(viewController, animated: true)
     }
-    
     func goToMarvelLink(with url: URL) {
         let viewController = makeSafariController(with: url)
         navigationController.present(viewController, animated: true, completion: nil)
     }
-    
 }
 // MARK: Private Methods
 private extension HeroesFlowCoordinator {
